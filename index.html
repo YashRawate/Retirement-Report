@@ -358,10 +358,10 @@
     </div>
 </div>
 <div class="ov" id="ov"><div class="modal"><div class="modal-hd"><div class="modal-hd-ico"><i class="fas fa-table-columns"></i></div><h2>Map your columns</h2></div><p class="modal-sub">We have auto-detected your Excel columns and pre-matched them below. Review and correct any mismatches. Fields marked <em style="color:var(--ro2)">*</em> are required.</p><div class="mmap" id="mmap"></div><div class="mfoot"><button class="btn-sec" onclick="closeModal()">Cancel</button><button class="btn-pri" onclick="procMap()">Generate Report →</button></div></div></div>
-<div class="drill-ov" id="drill-ov" onclick="closeDrill(event)"><div class="drill-modal"><div class="drill-hd"><span class="drill-title" id="drill-title">Employee List</span><button class="drill-close" onclick="document.getElementById('drill-ov').classList.remove('open')"><i class="fas fa-times"></i></button></div><div class="drill-body"><div class="tw"><div class="ts"><table><thead><tr id="drill-thead"></tr></thead><tbody id="drill-body"></tbody></table></div></div></div></div></div>
+<div class="drill-ov" id="drill-ov" onclick="closeDrill(event)"><div class="drill-modal"><div class="drill-hd"><span class="drill-title" id="drill-title">Employee List</span><button class="drill-close" onclick="document.getElementById('drill-ov').classList.remove('open')"><i class="fas fa-times"></i></button></div><div class="drill-body"><div class="tw"><div class="ts"><table><thead><tr id="drill-thead"></table></thead><tbody id="drill-body"></tbody></table></div></div></div></div></div>
 <div class="emp-popup-ov" id="emp-popup-ov" onclick="closeEmpPopup(event)"><div class="emp-popup" id="emp-popup"><button class="ep-close" onclick="document.getElementById('emp-popup-ov').classList.remove('open')"><i class="fas fa-times"></i></button><div class="ep-avatar" id="ep-avatar"></div><div class="ep-name" id="ep-name"></div><div class="ep-sub" id="ep-sub"></div><div class="ep-grid" id="ep-grid"></div><div id="ep-status-bar"></div></div></div>
 <div class="fs-ov" id="fs-ov" onclick="fsOvClick(event)"><div class="fs-modal"><div class="fs-hd"><span class="fs-title" id="fs-title"></span><button class="fs-close" onclick="closeFS()"><i class="fas fa-times"></i></button></div><div class="fs-body" style="height:70vh;position:relative"><canvas id="fs-canvas"></canvas></div></div></div>
-<div class="cd-ov" id="cd-ov" onclick="closeCDOv(event)"><div class="cd-modal"><div class="cd-top"><div class="cd-top-left"><div class="cd-top-ico" id="cd-ico"><i class="fas fa-chart-bar"></i></div><div><div class="cd-top-title" id="cd-title">Chart Details</div><div class="cd-top-sub" id="cd-sub">Full breakdown and analysis</div></div></div><button class="cd-close" onclick="closeCDModal()"><i class="fas fa-times"></i></button></div><div class="cd-stats-bar" id="cd-stats-bar"></div><div class="cd-body"><div class="cd-chart-area" id="cd-chart-area"><div class="cd-chart-wrap" id="cd-chart-wrap"><canvas id="cd-canvas"></canvas></div><div class="cd-table-section" id="cd-table-section" style="display:none"><div class="cd-table-title"><i class="fas fa-table-list"></i> <span id="cd-tbl-title">Data Table</span></div><div class="cd-table-scroll"><table class="cd-tbl"><thead id="cd-tbl-head"></thead><tbody id="cd-tbl-body"></tbody></tr></div></div></div><div class="cd-sidebar" id="cd-sidebar"><div class="cd-sidebar-title"><i class="fas fa-lightbulb"></i> Key Insights</div></div></div></div></div>
+<div class="cd-ov" id="cd-ov" onclick="closeCDOv(event)"><div class="cd-modal"><div class="cd-top"><div class="cd-top-left"><div class="cd-top-ico" id="cd-ico"><i class="fas fa-chart-bar"></i></div><div><div class="cd-top-title" id="cd-title">Chart Details</div><div class="cd-top-sub" id="cd-sub">Full breakdown and analysis</div></div></div><button class="cd-close" onclick="closeCDModal()"><i class="fas fa-times"></i></button></div><div class="cd-stats-bar" id="cd-stats-bar"></div><div class="cd-body"><div class="cd-chart-area" id="cd-chart-area"><div class="cd-chart-wrap" id="cd-chart-wrap"><canvas id="cd-canvas"></canvas></div><div class="cd-table-section" id="cd-table-section" style="display:none"><div class="cd-table-title"><i class="fas fa-table-list"></i> <span id="cd-tbl-title">Data Table</span></div><div class="cd-table-scroll"><table class="cd-tbl"><thead id="cd-tbl-head"></thead><tbody id="cd-tbl-body"></tbody></table></div></div></div><div class="cd-sidebar" id="cd-sidebar"><div class="cd-sidebar-title"><i class="fas fa-lightbulb"></i> Key Insights</div></div></div></div></div>
 <div class="loading-ov" id="loading-ov"><div class="loading-spinner"></div><div class="loading-text" id="loading-text">Generating report…</div></div>
 
 <script>
@@ -403,10 +403,10 @@ function paintHero(){const g=heroGroups[heroIndex];document.getElementById('hero
 function renderTop10(){document.getElementById('top10').innerHTML=DATA.slice(0,10).map((e,i)=>`<div class="t10-row" onclick='openEmpPopup(${JSON.stringify(e).replace(/'/g,"&#39;")})'><div class="t10-rank${i<3?' top3':''}">${i+1}</div><div class="t10-info"><div class="t10-name">${es(e.name)}</div><div class="t10-dept">${es(e.dept)} · ${es(e.desig)}</div></div><div class="t10-right"><div class="t10-date">${fd(e.rd)}</div><div class="t10-days">${e.days}d left</div></div></div>`).join('');}
 function openEmpPopup(emp){ if(typeof emp==='string')emp=JSON.parse(emp); if(typeof emp.dob==='string')emp.dob=new Date(emp.dob); if(typeof emp.rd==='string')emp.rd=new Date(emp.rd); const c=AVATAR_COLORS[0]; document.getElementById('ep-avatar').innerHTML=initials(emp.name); document.getElementById('ep-avatar').style.cssText=`width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;background:${c.bg};color:${c.color};margin-bottom:14px`; document.getElementById('ep-name').textContent=emp.name; document.getElementById('ep-sub').textContent=`${emp.desig} · ${emp.dept}`; const st=emp.days<0?'retired':emp.st; const stLabel={u:'Critical',s:'Soon',ok:'On Track',retired:'Retired'}[st]||'—'; const stColor={u:'var(--ro)',s:'var(--am)',ok:'var(--em)',retired:'var(--sk)'}[st]||'var(--tx3)'; const stBg={u:'var(--rol)',s:'var(--aml)',ok:'var(--eml)',retired:'var(--skl)'}[st]||'var(--s2)'; const fields=[{l:'Employee ID',v:emp.empid||'—',mono:true},{l:'Gender',v:emp.gender==='M'?'Male':emp.gender==='F'?'Female':'Unknown',mono:false},{l:'Date of Birth',v:fd(emp.dob),mono:true},{l:'Age',v:emp.age+' years',mono:false},{l:'Retirement Date',v:fd(emp.rd),mono:true},{l:'Days Remaining',v:emp.days>0?emp.days+'d':'Already retired',mono:false}]; if(emp.dc)fields.push({l:'Date of Joining',v:emp.dc,mono:true}); if(emp.sapuec)fields.push({l:'SAP UEC',v:emp.sapuec,mono:true}); document.getElementById('ep-grid').innerHTML=fields.map(f=>`<div class="ep-field"><div class="ep-flbl">${f.l}</div><div class="ep-fval${f.mono?' mono':''}">${es(String(f.v))}</div></div>`).join(''); document.getElementById('ep-status-bar').innerHTML=`<div style="display:inline-flex;align-items:center;gap:6px;background:${stBg};color:${stColor};border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700"><i class="fas fa-circle" style="font-size:7px"></i> ${stLabel}</div>`; document.getElementById('emp-popup-ov').classList.add('open');}
 function closeEmpPopup(e){if(e.target.id==='emp-popup-ov')document.getElementById('emp-popup-ov').classList.remove('open');}
-function showDrill(type){ let title='',list=[]; if(type==='all'){title=`All Upcoming Retirees (${DATA.length})`;list=DATA;} else if(type==='u'){const d=DATA.filter(e=>e.rd<=mf(3));title=`Critical — within 3 Months (${d.length})`;list=d;} else if(type==='s'){const d=DATA.filter(e=>e.rd<=mf(6));title=`Soon — within 6 Months (${d.length})`;list=d;} else if(type==='12m'){const d=DATA.filter(e=>e.rd<=mf(12));title=`Within 12 Months (${d.length})`;list=d;} else if(type==='past'){title=`Already Retired (${PAST.length})`;list=PAST;} document.getElementById('drill-title').textContent=title; const hdrs=['#'];if(list.length&&list[0].empid)hdrs.push('Emp ID');hdrs.push('Name','Designation','Department','DOB','Retirement Date','Days','Status'); document.getElementById('drill-thead').innerHTML=hdrs.map(h=>`<th>${h}</th>`).join(''); const SL2={u:'Critical',s:'Soon',ok:'On track',retired:'Retired'}; document.getElementById('drill-body').innerHTML=list.map((e,i)=>{ const st=type==='past'?'retired':e.st; const cells=[`<td class="cm">${i+1}</td>`]; if(hdrs.includes('Emp ID'))cells.push(`<td class="cm">${es(e.empid)}</td>`); cells.push(`<td class="cn">${es(e.name)}</td>`,`<td>${es(e.desig)}</td>`,`<td><span class="cdept">${es(e.dept)}</span></td>`,`<td class="cm">${fd(e.dob)}</td>`,`<td class="cm" style="font-weight:700;color:${type==='past'?'var(--tx3)':st==='u'?'var(--ro)':st==='s'?'var(--am)':'var(--em)'}">${fd(e.rd)}</td>`,`<td class="cm">${type==='past'?'—':e.days+'d'}</td>`,`<td><span class="pill ${st==='retired'?'ok':st}">${SL2[st]}</span></td>`); const eJson=JSON.stringify(e).replace(/'/g,"&#39;"); return `<tr onclick='openEmpPopup(${eJson})'>${cells.join('')}</td>`; }).join(''); document.getElementById('drill-ov').classList.add('open');}
+function showDrill(type){ let title='',list=[]; if(type==='all'){title=`All Upcoming Retirees (${DATA.length})`;list=DATA;} else if(type==='u'){const d=DATA.filter(e=>e.rd<=mf(3));title=`Critical — within 3 Months (${d.length})`;list=d;} else if(type==='s'){const d=DATA.filter(e=>e.rd<=mf(6));title=`Soon — within 6 Months (${d.length})`;list=d;} else if(type==='12m'){const d=DATA.filter(e=>e.rd<=mf(12));title=`Within 12 Months (${d.length})`;list=d;} else if(type==='past'){title=`Already Retired (${PAST.length})`;list=PAST;} document.getElementById('drill-title').textContent=title; const hdrs=['#'];if(list.length&&list[0].empid)hdrs.push('Emp ID');hdrs.push('Name','Designation','Department','DOB','Retirement Date','Days','Status'); document.getElementById('drill-thead').innerHTML=hdrs.map(h=>`<th>${h}</th>`).join(''); const SL2={u:'Critical',s:'Soon',ok:'On track',retired:'Retired'}; document.getElementById('drill-body').innerHTML=list.map((e,i)=>{ const st=type==='past'?'retired':e.st; const cells=[`<td class="cm">${i+1}</td>`]; if(hdrs.includes('Emp ID'))cells.push(`<td class="cm">${es(e.empid)}</td>`); cells.push(`<td class="cn">${es(e.name)}</td>`,`<td>${es(e.desig)}</td>`,`<td><span class="cdept">${es(e.dept)}</span></td>`,`<td class="cm">${fd(e.dob)}</td>`,`<td class="cm" style="font-weight:700;color:${type==='past'?'var(--tx3)':st==='u'?'var(--ro)':st==='s'?'var(--am)':'var(--em)'}">${fd(e.rd)}</td>`,`<td class="cm">${type==='past'?'—':e.days+'d'}</td>`,`<td><span class="pill ${st==='retired'?'ok':st}">${SL2[st]}</span></td>`); const eJson=JSON.stringify(e).replace(/'/g,"&#39;"); return `<tr onclick='openEmpPopup(${eJson})'>${cells.join('')}</tr>`; }).join(''); document.getElementById('drill-ov').classList.add('open');}
 function closeDrill(e){if(e.target.id==='drill-ov')document.getElementById('drill-ov').classList.remove('open');}
 function closeCDModal(){ document.getElementById('cd-ov').classList.remove('open'); if(cdDetailChart){cdDetailChart.destroy();cdDetailChart=null;} }
-function openChartDetail(chartId, type){ if(!DATA.length) return; if(cdDetailChart){cdDetailChart.destroy();cdDetailChart=null;} const P=['#1E3A8A','#065F46','#4C1D95','#92400E','#991B1B','#9D174D','#0C4A6E','#2563EB','#059669','#D97706','#7C3AED','#0284C7']; const TC='#828AAA', GR='rgba(214,218,230,0.5)'; const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:16,color:'#3B4060'}},tooltip:{callbacks:{label:(ctx)=>`${ctx.dataset.label||ctx.label}: ${ctx.raw}`},padding:10,bodyFont:{size:13},titleFont:{size:13,weight:'bold'}}}, scales:{x:{ticks:{color:TC,font:{size:12,family:"'Source Sans 3',sans-serif"},maxRotation:35},grid:{color:GR}},y:{ticks:{color:TC,font:{size:12,family:"'Source Sans 3',sans-serif"},stepSize:1},grid:{color:GR}}}}; const canvas=document.getElementById('cd-canvas'); const statsBar=document.getElementById('cd-stats-bar'); const sidebar=document.getElementById('cd-sidebar'); const tblSection=document.getElementById('cd-table-section'); let title='', iconHtml='<i class="fas fa-chart-bar"></i>', sub='', cfg={}, stats=[], insights=[], tableData=null; if(type==='dept'){ const dc=deptC(DATA), total=DATA.length; const topDept=dc[0]; const critDepts=dc.map(([d,c])=>({d,c,cr:DATA.filter(e=>e.dept===d&&e.days<=90).length})).sort((a,b)=>b.cr-a.cr); const critDept=critDepts[0]; title='Department-wise Retirement Analysis'; iconHtml='<i class="fas fa-building"></i>'; sub=`${dc.length} departments · ${total} upcoming retirees`; cfg={type:'bar',data:{labels:dc.map(e=>e[0]),datasets:[{label:'Total Retirees',data:dc.map(e=>e[1]),backgroundColor:dc.map((_,i)=>P[i%P.length]+'BB'),borderColor:dc.map((_,i)=>P[i%P.length]),borderWidth:2,borderRadius:8,barPercentage:0.7},{label:'Critical (≤3mo)',data:dc.map(([d])=>DATA.filter(e=>e.dept===d&&e.days<=90).length),backgroundColor:'#DC262699',borderColor:'#DC2626',borderWidth:2,borderRadius:8,barPercentage:0.7},{label:'Soon (≤6mo)',data:dc.map(([d])=>DATA.filter(e=>e.dept===d&&e.days>90&&e.days<=180).length),backgroundColor:'#D9770699',borderColor:'#D97706',borderWidth:2,borderRadius:8,barPercentage:0.7}]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{...baseOpts.plugins.legend,display:true}},scales:{...baseOpts.scales,x:{...baseOpts.scales.x,ticks:{...baseOpts.scales.x.ticks,maxRotation:40}}}}}; stats=[{n:dc.length,l:'Departments'},{n:total,l:'Total Retiring'},{n:topDept?topDept[1]:0,l:`Top Dept Count`},{n:critDept?critDept.cr:0,l:'Highest Critical'}]; insights=[{icon:'🏢',title:'Highest Volume',body:`${topDept?topDept[0]:'—'} leads with ${topDept?topDept[1]:0} retirees (${topDept?Math.round(topDept[1]/total*100):0}% of total). Prioritise succession planning here.`},{icon:'⚠️',title:'Critical Risk',body:`${critDept?critDept.d:'—'} has ${critDept?critDept.cr:0} employee(s) retiring within 3 months. Immediate backfill action required.`},{icon:'📊',title:'Coverage',body:`${dc.length} departments affected. ${dc.filter(([,c])=>c>=5).length} have 5 or more upcoming retirees.`},{icon:'💡',title:'Recommendation',body:`Focus recruitment in ${topDept?topDept[0]:'—'}${dc.length>1?' and '+dc[1][0]:''}. Begin knowledge transfer 6 months before each exit.`}]; tableData={title:'Full Department Breakdown',heads:['#','Department','Total','Critical','Soon','On Track','% Share'],rows:dc.map(([d,c],i)=>{const cr=DATA.filter(e=>e.dept===d&&e.days<=90).length,so=DATA.filter(e=>e.dept===d&&e.days>90&&e.days<=180).length,ok=c-cr-so;return [i+1,d,c,cr,so,ok,Math.round(c/total*100)+'%'];})}; } else if(type==='month'){ const mc=monthC(DATA); const maxM=mc.v.indexOf(Math.max(...mc.v)); const sum=mc.v.reduce((a,b)=>a+b,0); title='Monthly Retirement Trend'; iconHtml='<i class="fas fa-chart-line"></i>'; sub=`Next 12-month forecast · ${sum} total projected`; cfg={type:'line',data:{labels:mc.lb,datasets:[{label:'Monthly Retirees',data:mc.v,borderColor:'#065F46',backgroundColor:'rgba(6,95,70,0.1)',borderWidth:3,pointBackgroundColor:'#065F46',pointRadius:6,pointHoverRadius:9,tension:.4,fill:true},{label:'3-Month Rolling Avg',data:mc.v.map((_,i,a)=>{if(i<2)return null;return Math.round((a[i]+a[i-1]+a[i-2])/3*10)/10;}),borderColor:'#D97706',backgroundColor:'transparent',borderWidth:2.5,borderDash:[7,5],pointRadius:4,tension:.4,fill:false}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{mode:'index',intersect:false}}}}; stats=[{n:sum,l:'Total (12 months)'},{n:mc.v.length>0?Math.max(...mc.v):0,l:'Peak Month Count'},{n:mc.lb[maxM]||'—',l:'Peak Period'},{n:Math.round(sum/(mc.v.length||1)*10)/10,l:'Avg Per Month'}]; insights=[{icon:'📈',title:'Peak Period',body:`${mc.lb[maxM]||'—'} sees the most retirements: ${Math.max(...mc.v)||0}. Advance planning should start at least 3–6 months before.`},{icon:'📉',title:'Trend',body:`Monthly average is ${Math.round(sum/(mc.v.length||1))} retirements. ${mc.v.filter(v=>v>Math.round(sum/(mc.v.length||1))).length} months are above average.`},{icon:'🔔',title:'High-Alert Months',body:`${mc.v.filter(v=>v>=5).length} month(s) have 5 or more retirements. These need advance hiring pipelines.`}]; tableData={title:'Monthly Breakdown',heads:['Month','Retirees','Cumulative','vs Avg'],rows:mc.v.map((v,i)=>{let cum=0;for(let j=0;j<=i;j++)cum+=mc.v[j];const avg=Math.round(sum/(mc.v.length||1));return [mc.lb[i],v,cum,v>avg?'+'+( v-avg):(v<avg?''+(v-avg):'= avg')];})}; } else if(type==='desig'){ const des=desigC(DATA), total=DATA.length; title='Designation-wise Analysis'; iconHtml='<i class="fas fa-id-badge"></i>'; sub=`${des.length} designations represented`; cfg={type:'doughnut',data:{labels:des.map(e=>e[0]),datasets:[{data:des.map(e=>e[1]),backgroundColor:des.map((_,i)=>P[i%P.length]+'DD'),borderColor:'#fff',borderWidth:3,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:'48%',plugins:{legend:{position:'right',labels:{color:'#3B4060',font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:12}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/des.reduce((a,b)=>a+b[1],0)*100)}%)`},padding:10}}}}; stats=[{n:des.length,l:'Designations'},{n:des[0]?des[0][1]:0,l:'Top Count'},{n:Math.round((des[0]?des[0][1]:0)/total*100)+'%',l:'Top Share'},{n:total,l:'Total Retirees'}]; insights=[{icon:'👔',title:'Most Common',body:`${des[0]?des[0][0]:'—'} is the top designation with ${des[0]?des[0][1]:0} retirees (${Math.round((des[0]?des[0][1]:0)/total*100)}%).`},{icon:'⚖️',title:'Concentration',body:`Top 3 designations: ${Math.round(des.slice(0,3).reduce((a,b)=>a+b[1],0)/total*100)}% of retirements. Indicates ${des.slice(0,3).reduce((a,b)=>a+b[1],0)/total>0.7?'high':'moderate'} role concentration.`}]; tableData={title:'Designation Breakdown',heads:['#','Designation','Count','% Share','Critical','Soon'],rows:des.map(([d,c],i)=>[i+1,d,c,Math.round(c/total*100)+'%',DATA.filter(e=>e.desig===d&&e.days<=90).length,DATA.filter(e=>e.desig===d&&e.days>90&&e.days<=180).length])}; } else if(type==='age'){ const ag=ageC(DATA), total=DATA.length; title='Age Distribution Analysis'; iconHtml='<i class="fas fa-person"></i>'; sub='Age profile of upcoming retirees'; cfg={type:'doughnut',data:{labels:ag.map(e=>e[0]),datasets:[{data:ag.map(e=>e[1]),backgroundColor:['#DC2626CC','#D97706CC','#059669CC','#1E3A8ACC'],borderColor:'#fff',borderWidth:3,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:'48%',plugins:{legend:{position:'right',labels:{color:'#3B4060',font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:12}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/total*100)}%)`},padding:10}}}}; stats=[{n:DATA.filter(e=>e.age>=60).length,l:'Age 60+'},{n:DATA.filter(e=>e.age>=58&&e.age<60).length,l:'Age 58–59'},{n:DATA.filter(e=>e.age>=55&&e.age<58).length,l:'Age 55–57'},{n:DATA.filter(e=>e.age<55).length,l:'Below 55'}]; const avgAge=Math.round(DATA.reduce((s,e)=>s+e.age,0)/total); insights=[{icon:'👤',title:'Average Age',body:`Average age of upcoming retirees is ${avgAge} years. ${DATA.filter(e=>e.age>=60).length} employees are at or past 60.`},{icon:'📅',title:'Near-Term Band',body:`${DATA.filter(e=>e.age>=58).length} employees (${Math.round(DATA.filter(e=>e.age>=58).length/total*100)}%) are 58+ — high near-term pressure.`}]; tableData={title:'Age Band Details',heads:['Age Band','Count','%','Avg Days Left'],rows:ag.map(([band,c])=>{const emps=DATA.filter(e=>{if(band==='Below 55')return e.age<55;if(band==='55 to 57')return e.age>=55&&e.age<58;if(band==='58 to 59')return e.age>=58&&e.age<60;return e.age>=60;});const avgD=emps.length?Math.round(emps.reduce((s,e)=>s+e.days,0)/emps.length):0;return [band,c,Math.round(c/total*100)+'%',avgD+'d'];})}; } else if(type==='qtr'){ const qc={Q1:0,Q2:0,Q3:0,Q4:0}; DATA.forEach(e=>{const m=e.rd.getMonth()+1;if(m>=4&&m<=6)qc.Q1++;else if(m>=7&&m<=9)qc.Q2++;else if(m>=10&&m<=12)qc.Q3++;else qc.Q4++;}); const qLabels={'Q1':'Q1 (Apr–Jun)','Q2':'Q2 (Jul–Sep)','Q3':'Q3 (Oct–Dec)','Q4':'Q4 (Jan–Mar)'}; const maxQ=Object.entries(qc).sort((a,b)=>b[1]-a[1])[0]; title='Quarterly Retirement Distribution'; iconHtml='<i class="fas fa-calendar-quarter"></i>'; sub='Indian fiscal year quarters (Apr–Mar)'; cfg={type:'bar',data:{labels:Object.keys(qc).map(k=>qLabels[k]),datasets:[{label:'Retirees',data:Object.values(qc),backgroundColor:['#1E3A8A99','#06574699','#4C1D9599','#92400E99'],borderColor:['#1E3A8A','#065746','#4C1D95','#92400E'],borderWidth:2.5,borderRadius:14,barPercentage:0.55}]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:false}}}}; stats=Object.entries(qc).map(([q,c])=>({n:c,l:q+' ('+['Apr–Jun','Jul–Sep','Oct–Dec','Jan–Mar'][['Q1','Q2','Q3','Q4'].indexOf(q)]+')'})); insights=[{icon:'📅',title:'Peak Quarter',body:`${qLabels[maxQ[0]]} has the most retirements (${maxQ[1]}). Initiate recruitment the quarter before.`},{icon:'⚖️',title:'Balance',body:`Q1:${qc.Q1} · Q2:${qc.Q2} · Q3:${qc.Q3} · Q4:${qc.Q4}. ${Math.max(...Object.values(qc))===Math.min(...Object.values(qc))?'Even distribution.':'Uneven — plan high-volume quarters in advance.'}`}]; tableData={title:'Quarterly Details',heads:['Quarter','Period','Retirees','% Share','Critical','Soon'],rows:Object.entries(qc).map(([q,c])=>{const periods={'Q1':'Apr–Jun','Q2':'Jul–Sep','Q3':'Oct–Dec','Q4':'Jan–Mar'};const mRange={'Q1':[4,6],'Q2':[7,9],'Q3':[10,12],'Q4':[1,3]};const [ms,me]=mRange[q];const qEmps=DATA.filter(e=>{const m=e.rd.getMonth()+1;return m>=ms&&m<=me;});return [q,periods[q],c,Math.round(c/DATA.length*100)+'%',qEmps.filter(e=>e.days<=90).length,qEmps.filter(e=>e.days>90&&e.days<=180).length];})}; } else if(type==='cumul'){ const mc=monthC(DATA); let cum=0;const cv=mc.v.map(v=>{cum+=v;return cum;}); title='Cumulative Retirement Projection'; iconHtml='<i class="fas fa-chart-area"></i>'; sub='Cumulative trajectory over next 12 months'; cfg={type:'line',data:{labels:mc.lb,datasets:[{label:'Cumulative Retirees',data:cv,borderColor:'#9D174D',backgroundColor:'rgba(157,23,77,0.1)',borderWidth:3,pointBackgroundColor:'#9D174D',pointRadius:6,tension:.4,fill:true},{label:'Monthly New',data:mc.v,borderColor:'#7C3AED',backgroundColor:'transparent',borderWidth:2.5,borderDash:[6,4],pointRadius:4,tension:.4}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{mode:'index',intersect:false}}}}; const midIdx=Math.floor(mc.v.length/2);const midCum=cv[midIdx]||0; stats=[{n:cum,l:'Total (12 months)'},{n:mc.v.filter(v=>v>0).length,l:'Months with Exits'},{n:midCum,l:'6-Month Mark'},{n:Math.round(cum/(mc.v.length||1)*10)/10,l:'Monthly Avg'}]; insights=[{icon:'📈',title:'12-Month Impact',body:`${cum} total retirements by year-end. The 6-month mark sees ${midCum} (${Math.round(midCum/cum*100)}% of annual).`},{icon:'⚡',title:'Rate',body:`The rate ${mc.v[mc.v.length-1]>(mc.v[0]||0)?'accelerates':'decelerates'} over the year. Align hiring waves with the steepest slope.`}]; tableData={title:'Monthly Cumulative',heads:['Month','New Retirees','Cumulative','% Progress'],rows:mc.v.map((v,i)=>[mc.lb[i],v,cv[i],Math.round((cv[i]/cum)*100)+'%'])}; } else if(type==='gender'){ const mC=DATA.filter(e=>e.gender==='M').length,fC=DATA.filter(e=>e.gender==='F').length,uC=DATA.filter(e=>e.gender==='?').length,total=DATA.length; title='Gender Distribution'; iconHtml='<i class="fas fa-venus-mars"></i>'; sub='Demographic breakdown of upcoming retirees'; cfg={type:'doughnut',data:{labels:['Male','Female','Unknown'],datasets:[{data:[mC,fC,uC],backgroundColor:['#1E3A8ADD','#9D174DDD','#828AAADD'],borderColor:'#fff',borderWidth:3,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:'52%',plugins:{legend:{position:'right',labels:{color:'#3B4060',font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:14}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/total*100)}%)`},padding:10}}}}; stats=[{n:mC,l:'Male'},{n:fC,l:'Female'},{n:Math.round(mC/total*100)+'%',l:'Male %'},{n:Math.round(fC/total*100)+'%',l:'Female %'}]; insights=[{icon:'⚖️',title:'Gender Balance',body:`${Math.round(mC/total*100)}% male · ${Math.round(fC/total*100)}% female.${uC>0?' '+uC+' records without gender data.':''}`},{icon:'📋',title:'Critical by Gender',body:`Male critical: ${DATA.filter(e=>e.gender==='M'&&e.days<=90).length}  · Female critical: ${DATA.filter(e=>e.gender==='F'&&e.days<=90).length}`}]; tableData={title:'Gender Breakdown',heads:['Gender','Total','%','Critical','Soon','On Track'],rows:[['Male',mC,Math.round(mC/total*100)+'%',DATA.filter(e=>e.gender==='M'&&e.days<=90).length,DATA.filter(e=>e.gender==='M'&&e.days>90&&e.days<=180).length,DATA.filter(e=>e.gender==='M'&&e.days>180).length],['Female',fC,Math.round(fC/total*100)+'%',DATA.filter(e=>e.gender==='F'&&e.days<=90).length,DATA.filter(e=>e.gender==='F'&&e.days>90&&e.days<=180).length,DATA.filter(e=>e.gender==='F'&&e.days>180).length],['Unknown',uC,Math.round(uC/total*100)+'%',DATA.filter(e=>e.gender==='?'&&e.days<=90).length,DATA.filter(e=>e.gender==='?'&&e.days>90&&e.days<=180).length,DATA.filter(e=>e.gender==='?'&&e.days>180).length]]}; } document.getElementById('cd-title').textContent=title; document.getElementById('cd-sub').textContent=sub; document.getElementById('cd-ico').innerHTML=iconHtml; statsBar.innerHTML=stats.map(s=>`<div class="cd-stat-item"><div class="cd-stat-num">${s.n}</div><div class="cd-stat-lbl">${s.l}</div></div>`).join(''); cdDetailChart=new Chart(canvas, cfg); sidebar.innerHTML=`<div class="cd-sidebar-title"><i class="fas fa-lightbulb"></i> Key Insights</div>`+ insights.map(i=>`<div class="cd-insight"><span class="cd-insight-icon">${i.icon}</span><div class="cd-insight-title">${i.title}</div><div class="cd-insight-body">${i.body}</div></div>`).join(''); if(tableData){ tblSection.style.display='block'; document.getElementById('cd-tbl-title').textContent=tableData.title; document.getElementById('cd-tbl-head').innerHTML='</tr>'+tableData.heads.map(h=>`<th>${h}</th>`).join('')+'</tr>'; const maxVal=tableData.rows.length>0?Math.max(...tableData.rows.map(r=>typeof r[2]==='number'?r[2]:0)):1; document.getElementById('cd-tbl-body').innerHTML=tableData.rows.map(r=>`<tr>${r.map((cell,ci)=>{ if(ci===2&&typeof cell==='number'&&tableData.heads[ci]==='Total' || (ci===2&&typeof cell==='number'&&tableData.heads[2]==='Total') || (ci===1&&typeof cell==='number'&&tableData.heads[0]==='Month')){ if(typeof cell==='number'){ return `<td><div class="cd-bar-inline"><span class="cd-bar-num">${cell}</span><div class="cd-bar-bg"><div class="cd-bar-fill" style="width:${Math.round(cell/maxVal*100)}%;background:linear-gradient(90deg,#1E3A8A,#2563EB)"></div></div></div></td>`; } } return `<td style="font-size:13px">${cell}</td>`; }).join('')}</tr>`).join(''); } else { tblSection.style.display='none'; } document.getElementById('cd-ov').classList.add('open'); }
+function openChartDetail(chartId, type){ if(!DATA.length) return; if(cdDetailChart){cdDetailChart.destroy();cdDetailChart=null;} const P=['#1E3A8A','#065F46','#4C1D95','#92400E','#991B1B','#9D174D','#0C4A6E','#2563EB','#059669','#D97706','#7C3AED','#0284C7']; const TC='#828AAA', GR='rgba(214,218,230,0.5)'; const baseOpts={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:true,position:'top',labels:{font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:16,color:'#3B4060'}},tooltip:{callbacks:{label:(ctx)=>`${ctx.dataset.label||ctx.label}: ${ctx.raw}`},padding:10,bodyFont:{size:13},titleFont:{size:13,weight:'bold'}}}, scales:{x:{ticks:{color:TC,font:{size:12,family:"'Source Sans 3',sans-serif"},maxRotation:35},grid:{color:GR}},y:{ticks:{color:TC,font:{size:12,family:"'Source Sans 3',sans-serif"},stepSize:1},grid:{color:GR}}}}; const canvas=document.getElementById('cd-canvas'); const statsBar=document.getElementById('cd-stats-bar'); const sidebar=document.getElementById('cd-sidebar'); const tblSection=document.getElementById('cd-table-section'); let title='', iconHtml='<i class="fas fa-chart-bar"></i>', sub='', cfg={}, stats=[], insights=[], tableData=null; if(type==='dept'){ const dc=deptC(DATA), total=DATA.length; const topDept=dc[0]; const critDepts=dc.map(([d,c])=>({d,c,cr:DATA.filter(e=>e.dept===d&&e.days<=90).length})).sort((a,b)=>b.cr-a.cr); const critDept=critDepts[0]; title='Department-wise Retirement Analysis'; iconHtml='<i class="fas fa-building"></i>'; sub=`${dc.length} departments · ${total} upcoming retirees`; cfg={type:'bar',data:{labels:dc.map(e=>e[0]),datasets:[{label:'Total Retirees',data:dc.map(e=>e[1]),backgroundColor:dc.map((_,i)=>P[i%P.length]+'BB'),borderColor:dc.map((_,i)=>P[i%P.length]),borderWidth:2,borderRadius:8,barPercentage:0.7},{label:'Critical (≤3mo)',data:dc.map(([d])=>DATA.filter(e=>e.dept===d&&e.days<=90).length),backgroundColor:'#DC262699',borderColor:'#DC2626',borderWidth:2,borderRadius:8,barPercentage:0.7},{label:'Soon (≤6mo)',data:dc.map(([d])=>DATA.filter(e=>e.dept===d&&e.days>90&&e.days<=180).length),backgroundColor:'#D9770699',borderColor:'#D97706',borderWidth:2,borderRadius:8,barPercentage:0.7}]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{...baseOpts.plugins.legend,display:true}},scales:{...baseOpts.scales,x:{...baseOpts.scales.x,ticks:{...baseOpts.scales.x.ticks,maxRotation:40}}}}}; stats=[{n:dc.length,l:'Departments'},{n:total,l:'Total Retiring'},{n:topDept?topDept[1]:0,l:`Top Dept Count`},{n:critDept?critDept.cr:0,l:'Highest Critical'}]; insights=[{icon:'🏢',title:'Highest Volume',body:`${topDept?topDept[0]:'—'} leads with ${topDept?topDept[1]:0} retirees (${topDept?Math.round(topDept[1]/total*100):0}% of total). Prioritise succession planning here.`},{icon:'⚠️',title:'Critical Risk',body:`${critDept?critDept.d:'—'} has ${critDept?critDept.cr:0} employee(s) retiring within 3 months. Immediate backfill action required.`},{icon:'📊',title:'Coverage',body:`${dc.length} departments affected. ${dc.filter(([,c])=>c>=5).length} have 5 or more upcoming retirees.`},{icon:'💡',title:'Recommendation',body:`Focus recruitment in ${topDept?topDept[0]:'—'}${dc.length>1?' and '+dc[1][0]:''}. Begin knowledge transfer 6 months before each exit.`}]; tableData={title:'Full Department Breakdown',heads:['#','Department','Total','Critical','Soon','On Track','% Share'],rows:dc.map(([d,c],i)=>{const cr=DATA.filter(e=>e.dept===d&&e.days<=90).length,so=DATA.filter(e=>e.dept===d&&e.days>90&&e.days<=180).length,ok=c-cr-so;return [i+1,d,c,cr,so,ok,Math.round(c/total*100)+'%'];})}; } else if(type==='month'){ const mc=monthC(DATA); const maxM=mc.v.indexOf(Math.max(...mc.v)); const sum=mc.v.reduce((a,b)=>a+b,0); title='Monthly Retirement Trend'; iconHtml='<i class="fas fa-chart-line"></i>'; sub=`Next 12-month forecast · ${sum} total projected`; cfg={type:'line',data:{labels:mc.lb,datasets:[{label:'Monthly Retirees',data:mc.v,borderColor:'#065F46',backgroundColor:'rgba(6,95,70,0.1)',borderWidth:3,pointBackgroundColor:'#065F46',pointRadius:6,pointHoverRadius:9,tension:.4,fill:true},{label:'3-Month Rolling Avg',data:mc.v.map((_,i,a)=>{if(i<2)return null;return Math.round((a[i]+a[i-1]+a[i-2])/3*10)/10;}),borderColor:'#D97706',backgroundColor:'transparent',borderWidth:2.5,borderDash:[7,5],pointRadius:4,tension:.4,fill:false}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{mode:'index',intersect:false}}}}; stats=[{n:sum,l:'Total (12 months)'},{n:mc.v.length>0?Math.max(...mc.v):0,l:'Peak Month Count'},{n:mc.lb[maxM]||'—',l:'Peak Period'},{n:Math.round(sum/(mc.v.length||1)*10)/10,l:'Avg Per Month'}]; insights=[{icon:'📈',title:'Peak Period',body:`${mc.lb[maxM]||'—'} sees the most retirements: ${Math.max(...mc.v)||0}. Advance planning should start at least 3–6 months before.`},{icon:'📉',title:'Trend',body:`Monthly average is ${Math.round(sum/(mc.v.length||1))} retirements. ${mc.v.filter(v=>v>Math.round(sum/(mc.v.length||1))).length} months are above average.`},{icon:'🔔',title:'High-Alert Months',body:`${mc.v.filter(v=>v>=5).length} month(s) have 5 or more retirements. These need advance hiring pipelines.`}]; tableData={title:'Monthly Breakdown',heads:['Month','Retirees','Cumulative','vs Avg'],rows:mc.v.map((v,i)=>{let cum=0;for(let j=0;j<=i;j++)cum+=mc.v[j];const avg=Math.round(sum/(mc.v.length||1));return [mc.lb[i],v,cum,v>avg?'+'+( v-avg):(v<avg?''+(v-avg):'= avg')];})}; } else if(type==='desig'){ const des=desigC(DATA), total=DATA.length; title='Designation-wise Analysis'; iconHtml='<i class="fas fa-id-badge"></i>'; sub=`${des.length} designations represented`; cfg={type:'doughnut',data:{labels:des.map(e=>e[0]),datasets:[{data:des.map(e=>e[1]),backgroundColor:des.map((_,i)=>P[i%P.length]+'DD'),borderColor:'#fff',borderWidth:3,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:'48%',plugins:{legend:{position:'right',labels:{color:'#3B4060',font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:12}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/des.reduce((a,b)=>a+b[1],0)*100)}%)`},padding:10}}}}; stats=[{n:des.length,l:'Designations'},{n:des[0]?des[0][1]:0,l:'Top Count'},{n:Math.round((des[0]?des[0][1]:0)/total*100)+'%',l:'Top Share'},{n:total,l:'Total Retirees'}]; insights=[{icon:'👔',title:'Most Common',body:`${des[0]?des[0][0]:'—'} is the top designation with ${des[0]?des[0][1]:0} retirees (${Math.round((des[0]?des[0][1]:0)/total*100)}%).`},{icon:'⚖️',title:'Concentration',body:`Top 3 designations: ${Math.round(des.slice(0,3).reduce((a,b)=>a+b[1],0)/total*100)}% of retirements. Indicates ${des.slice(0,3).reduce((a,b)=>a+b[1],0)/total>0.7?'high':'moderate'} role concentration.`}]; tableData={title:'Designation Breakdown',heads:['#','Designation','Count','% Share','Critical','Soon'],rows:des.map(([d,c],i)=>[i+1,d,c,Math.round(c/total*100)+'%',DATA.filter(e=>e.desig===d&&e.days<=90).length,DATA.filter(e=>e.desig===d&&e.days>90&&e.days<=180).length])}; } else if(type==='age'){ const ag=ageC(DATA), total=DATA.length; title='Age Distribution Analysis'; iconHtml='<i class="fas fa-person"></i>'; sub='Age profile of upcoming retirees'; cfg={type:'doughnut',data:{labels:ag.map(e=>e[0]),datasets:[{data:ag.map(e=>e[1]),backgroundColor:['#DC2626CC','#D97706CC','#059669CC','#1E3A8ACC'],borderColor:'#fff',borderWidth:3,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:'48%',plugins:{legend:{position:'right',labels:{color:'#3B4060',font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:12}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/total*100)}%)`},padding:10}}}}; stats=[{n:DATA.filter(e=>e.age>=60).length,l:'Age 60+'},{n:DATA.filter(e=>e.age>=58&&e.age<60).length,l:'Age 58–59'},{n:DATA.filter(e=>e.age>=55&&e.age<58).length,l:'Age 55–57'},{n:DATA.filter(e=>e.age<55).length,l:'Below 55'}]; const avgAge=Math.round(DATA.reduce((s,e)=>s+e.age,0)/total); insights=[{icon:'👤',title:'Average Age',body:`Average age of upcoming retirees is ${avgAge} years. ${DATA.filter(e=>e.age>=60).length} employees are at or past 60.`},{icon:'📅',title:'Near-Term Band',body:`${DATA.filter(e=>e.age>=58).length} employees (${Math.round(DATA.filter(e=>e.age>=58).length/total*100)}%) are 58+ — high near-term pressure.`}]; tableData={title:'Age Band Details',heads:['Age Band','Count','%','Avg Days Left'],rows:ag.map(([band,c])=>{const emps=DATA.filter(e=>{if(band==='Below 55')return e.age<55;if(band==='55 to 57')return e.age>=55&&e.age<58;if(band==='58 to 59')return e.age>=58&&e.age<60;return e.age>=60;});const avgD=emps.length?Math.round(emps.reduce((s,e)=>s+e.days,0)/emps.length):0;return [band,c,Math.round(c/total*100)+'%',avgD+'d'];})}; } else if(type==='qtr'){ const qc={Q1:0,Q2:0,Q3:0,Q4:0}; DATA.forEach(e=>{const m=e.rd.getMonth()+1;if(m>=4&&m<=6)qc.Q1++;else if(m>=7&&m<=9)qc.Q2++;else if(m>=10&&m<=12)qc.Q3++;else qc.Q4++;}); const qLabels={'Q1':'Q1 (Apr–Jun)','Q2':'Q2 (Jul–Sep)','Q3':'Q3 (Oct–Dec)','Q4':'Q4 (Jan–Mar)'}; const maxQ=Object.entries(qc).sort((a,b)=>b[1]-a[1])[0]; title='Quarterly Retirement Distribution'; iconHtml='<i class="fas fa-calendar-quarter"></i>'; sub='Indian fiscal year quarters (Apr–Mar)'; cfg={type:'bar',data:{labels:Object.keys(qc).map(k=>qLabels[k]),datasets:[{label:'Retirees',data:Object.values(qc),backgroundColor:['#1E3A8A99','#06574699','#4C1D9599','#92400E99'],borderColor:['#1E3A8A','#065746','#4C1D95','#92400E'],borderWidth:2.5,borderRadius:14,barPercentage:0.55}]},options:{...baseOpts,plugins:{...baseOpts.plugins,legend:{display:false}}}}; stats=Object.entries(qc).map(([q,c])=>({n:c,l:q+' ('+['Apr–Jun','Jul–Sep','Oct–Dec','Jan–Mar'][['Q1','Q2','Q3','Q4'].indexOf(q)]+')'})); insights=[{icon:'📅',title:'Peak Quarter',body:`${qLabels[maxQ[0]]} has the most retirements (${maxQ[1]}). Initiate recruitment the quarter before.`},{icon:'⚖️',title:'Balance',body:`Q1:${qc.Q1} · Q2:${qc.Q2} · Q3:${qc.Q3} · Q4:${qc.Q4}. ${Math.max(...Object.values(qc))===Math.min(...Object.values(qc))?'Even distribution.':'Uneven — plan high-volume quarters in advance.'}`}]; tableData={title:'Quarterly Details',heads:['Quarter','Period','Retirees','% Share','Critical','Soon'],rows:Object.entries(qc).map(([q,c])=>{const periods={'Q1':'Apr–Jun','Q2':'Jul–Sep','Q3':'Oct–Dec','Q4':'Jan–Mar'};const mRange={'Q1':[4,6],'Q2':[7,9],'Q3':[10,12],'Q4':[1,3]};const [ms,me]=mRange[q];const qEmps=DATA.filter(e=>{const m=e.rd.getMonth()+1;return m>=ms&&m<=me;});return [q,periods[q],c,Math.round(c/DATA.length*100)+'%',qEmps.filter(e=>e.days<=90).length,qEmps.filter(e=>e.days>90&&e.days<=180).length];})}; } else if(type==='cumul'){ const mc=monthC(DATA); let cum=0;const cv=mc.v.map(v=>{cum+=v;return cum;}); title='Cumulative Retirement Projection'; iconHtml='<i class="fas fa-chart-area"></i>'; sub='Cumulative trajectory over next 12 months'; cfg={type:'line',data:{labels:mc.lb,datasets:[{label:'Cumulative Retirees',data:cv,borderColor:'#9D174D',backgroundColor:'rgba(157,23,77,0.1)',borderWidth:3,pointBackgroundColor:'#9D174D',pointRadius:6,tension:.4,fill:true},{label:'Monthly New',data:mc.v,borderColor:'#7C3AED',backgroundColor:'transparent',borderWidth:2.5,borderDash:[6,4],pointRadius:4,tension:.4}]},options:{...baseOpts,plugins:{...baseOpts.plugins,tooltip:{mode:'index',intersect:false}}}}; const midIdx=Math.floor(mc.v.length/2);const midCum=cv[midIdx]||0; stats=[{n:cum,l:'Total (12 months)'},{n:mc.v.filter(v=>v>0).length,l:'Months with Exits'},{n:midCum,l:'6-Month Mark'},{n:Math.round(cum/(mc.v.length||1)*10)/10,l:'Monthly Avg'}]; insights=[{icon:'📈',title:'12-Month Impact',body:`${cum} total retirements by year-end. The 6-month mark sees ${midCum} (${Math.round(midCum/cum*100)}% of annual).`},{icon:'⚡',title:'Rate',body:`The rate ${mc.v[mc.v.length-1]>(mc.v[0]||0)?'accelerates':'decelerates'} over the year. Align hiring waves with the steepest slope.`}]; tableData={title:'Monthly Cumulative',heads:['Month','New Retirees','Cumulative','% Progress'],rows:mc.v.map((v,i)=>[mc.lb[i],v,cv[i],Math.round((cv[i]/cum)*100)+'%'])}; } else if(type==='gender'){ const mC=DATA.filter(e=>e.gender==='M').length,fC=DATA.filter(e=>e.gender==='F').length,uC=DATA.filter(e=>e.gender==='?').length,total=DATA.length; title='Gender Distribution'; iconHtml='<i class="fas fa-venus-mars"></i>'; sub='Demographic breakdown of upcoming retirees'; cfg={type:'doughnut',data:{labels:['Male','Female','Unknown'],datasets:[{data:[mC,fC,uC],backgroundColor:['#1E3A8ADD','#9D174DDD','#828AAADD'],borderColor:'#fff',borderWidth:3,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:'52%',plugins:{legend:{position:'right',labels:{color:'#3B4060',font:{size:13,family:"'Source Sans 3',sans-serif"},boxWidth:14,padding:14}},tooltip:{callbacks:{label:(ctx)=>`${ctx.label}: ${ctx.raw} (${Math.round(ctx.raw/total*100)}%)`},padding:10}}}}; stats=[{n:mC,l:'Male'},{n:fC,l:'Female'},{n:Math.round(mC/total*100)+'%',l:'Male %'},{n:Math.round(fC/total*100)+'%',l:'Female %'}]; insights=[{icon:'⚖️',title:'Gender Balance',body:`${Math.round(mC/total*100)}% male · ${Math.round(fC/total*100)}% female.${uC>0?' '+uC+' records without gender data.':''}`},{icon:'📋',title:'Critical by Gender',body:`Male critical: ${DATA.filter(e=>e.gender==='M'&&e.days<=90).length}  · Female critical: ${DATA.filter(e=>e.gender==='F'&&e.days<=90).length}`}]; tableData={title:'Gender Breakdown',heads:['Gender','Total','%','Critical','Soon','On Track'],rows:[['Male',mC,Math.round(mC/total*100)+'%',DATA.filter(e=>e.gender==='M'&&e.days<=90).length,DATA.filter(e=>e.gender==='M'&&e.days>90&&e.days<=180).length,DATA.filter(e=>e.gender==='M'&&e.days>180).length],['Female',fC,Math.round(fC/total*100)+'%',DATA.filter(e=>e.gender==='F'&&e.days<=90).length,DATA.filter(e=>e.gender==='F'&&e.days>90&&e.days<=180).length,DATA.filter(e=>e.gender==='F'&&e.days>180).length],['Unknown',uC,Math.round(uC/total*100)+'%',DATA.filter(e=>e.gender==='?'&&e.days<=90).length,DATA.filter(e=>e.gender==='?'&&e.days>90&&e.days<=180).length,DATA.filter(e=>e.gender==='?'&&e.days>180).length]]}; } document.getElementById('cd-title').textContent=title; document.getElementById('cd-sub').textContent=sub; document.getElementById('cd-ico').innerHTML=iconHtml; statsBar.innerHTML=stats.map(s=>`<div class="cd-stat-item"><div class="cd-stat-num">${s.n}</div><div class="cd-stat-lbl">${s.l}</div></div>`).join(''); cdDetailChart=new Chart(canvas, cfg); sidebar.innerHTML=`<div class="cd-sidebar-title"><i class="fas fa-lightbulb"></i> Key Insights</div>`+ insights.map(i=>`<div class="cd-insight"><span class="cd-insight-icon">${i.icon}</span><div class="cd-insight-title">${i.title}</div><div class="cd-insight-body">${i.body}</div></div>`).join(''); if(tableData){ tblSection.style.display='block'; document.getElementById('cd-tbl-title').textContent=tableData.title; document.getElementById('cd-tbl-head').innerHTML='<tr>'+tableData.heads.map(h=>`<th>${h}</th>`).join('')+'</tr>'; const maxVal=tableData.rows.length>0?Math.max(...tableData.rows.map(r=>typeof r[2]==='number'?r[2]:0)):1; document.getElementById('cd-tbl-body').innerHTML=tableData.rows.map(r=>`<tr>${r.map((cell,ci)=>{ if(ci===2&&typeof cell==='number'&&tableData.heads[ci]==='Total' || (ci===2&&typeof cell==='number'&&tableData.heads[2]==='Total') || (ci===1&&typeof cell==='number'&&tableData.heads[0]==='Month')){ if(typeof cell==='number'){ return `<td><div class="cd-bar-inline"><span class="cd-bar-num">${cell}</span><div class="cd-bar-bg"><div class="cd-bar-fill" style="width:${Math.round(cell/maxVal*100)}%;background:linear-gradient(90deg,#1E3A8A,#2563EB)"></div></div></div></td>`; } } return `<td style="font-size:13px">${cell}</td>`; }).join('')}<tr>`).join(''); } else { tblSection.style.display='none'; } document.getElementById('cd-ov').classList.add('open'); }
 function closeCDOv(e){if(e.target.id==='cd-ov')closeCDModal();}
 function openFS(id,title){ const originalChart=CH[id]; if(!originalChart){return;} const canvas=document.getElementById('fs-canvas'); document.getElementById('fs-title').textContent=title+' — Detailed View'; if(fsChart){fsChart.destroy();fsChart=null;} fsChart=new Chart(canvas,{type:originalChart.config.type,data:JSON.parse(JSON.stringify(originalChart.config.data)),options:{...JSON.parse(JSON.stringify(originalChart.config.options||{})),responsive:true,maintainAspectRatio:false}}); document.getElementById('fs-ov').classList.add('open');}
 function closeFS(){document.getElementById('fs-ov').classList.remove('open');if(fsChart){fsChart.destroy();fsChart=null;}}
@@ -439,7 +439,7 @@ function dl(url,name){const a=document.createElement('a');a.href=url;a.download=
 function showLoading(text='Generating report…'){document.getElementById('loading-text').textContent=text;document.getElementById('loading-ov').classList.add('show');}
 function hideLoading(){document.getElementById('loading-ov').classList.remove('show');}
 
-// ========== SIMPLE REPORT GENERATION (NO BACKEND, PROPER FORMATTING) ==========
+// ========== SIMPLE REPORT GENERATION - FIXED PROPER ALIGNMENT ==========
 function generateSimpleReport(type) {
     if(!DATA.length) {
         alert('Please upload data first');
@@ -461,20 +461,22 @@ function generateSimplePDF() {
     const margin = 15;
     let y = 20;
     
-    // Title
-    doc.setFontSize(20);
+    // Title Section
+    doc.setFontSize(22);
     doc.setTextColor(30, 58, 138);
     doc.text("NMDC Limited", margin, y);
-    y += 8;
+    y += 10;
     
-    doc.setFontSize(14);
+    doc.setFontSize(16);
     doc.setTextColor(0, 0, 0);
     doc.text("HR Retirement Intelligence Report", margin, y);
     y += 8;
     
     doc.setFontSize(9);
     doc.setTextColor(100, 100, 120);
-    doc.text(`Generated: ${new Date().toLocaleString()}`, margin, y);
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    doc.text(`Generated: ${dateStr}`, margin, y);
     y += 15;
     
     // KPIs
@@ -494,33 +496,35 @@ function generateSimplePDF() {
         head: [kpiData[0]],
         body: [kpiData[1]],
         theme: 'striped',
-        headStyles: { fillColor: [30, 58, 138], textColor: 255, fontSize: 10, halign: 'center' },
-        bodyStyles: { fontSize: 16, halign: 'center', fontStyle: 'bold', textColor: [30, 58, 138] },
+        headStyles: { fillColor: [30, 58, 138], textColor: 255, fontSize: 11, halign: 'center', valign: 'middle' },
+        bodyStyles: { fontSize: 18, halign: 'center', fontStyle: 'bold', textColor: [30, 58, 138], valign: 'middle' },
         margin: { left: margin, right: margin },
-        styles: { cellPadding: 8 }
+        styles: { cellPadding: 10, lineWidth: 0.5, lineColor: [200, 200, 200] }
     });
+    y = doc.lastAutoTable.finalY + 10;
     
-    y = doc.lastAutoTable.finalY + 12;
-    
-    // Legend - FIXED: Clean text without garbage characters
-    doc.setFontSize(10);
+    // Status Guide - Clean and readable
+    doc.setFontSize(11);
     doc.setTextColor(0, 0, 0);
-    doc.text("Status Guide:", margin, y);
-    y += 5;
-    doc.setFontSize(8);
+    doc.setFont('helvetica', 'bold');
+    doc.text("Status Guide", margin, y);
+    y += 6;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
     doc.setTextColor(220, 38, 38);
-    doc.text("> Critical - Retiring within 90 days (Immediate action required)", margin, y);
+    doc.text("[ CRITICAL ] - Retiring within 90 days (Immediate action required)", margin, y);
     y += 5;
     doc.setTextColor(245, 158, 11);
-    doc.text("> Soon - Retiring in 91-180 days (Start succession planning)", margin, y);
+    doc.text("[ SOON ] - Retiring in 91-180 days (Start succession planning)", margin, y);
     y += 5;
     doc.setTextColor(16, 185, 129);
-    doc.text("> On Track - Retiring after 180 days (Regular monitoring)", margin, y);
+    doc.text("[ ON TRACK ] - Retiring after 180 days (Regular monitoring)", margin, y);
     y += 12;
     
     // Department Table
     doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
     doc.text("Department-wise Breakdown", margin, y);
     y += 6;
     
@@ -541,53 +545,60 @@ function generateSimplePDF() {
         head: [['Department', 'Total', 'Critical', 'Soon', 'On Track', 'Share']],
         body: deptRows,
         theme: 'striped',
-        headStyles: { fillColor: [30, 58, 138], textColor: 255, fontSize: 9, halign: 'center' },
-        bodyStyles: { fontSize: 8 },
+        headStyles: { fillColor: [30, 58, 138], textColor: 255, fontSize: 10, halign: 'center', valign: 'middle' },
+        bodyStyles: { fontSize: 9, valign: 'middle' },
         margin: { left: margin, right: margin },
-        columnStyles: { 0: { cellWidth: 55 }, 1: { cellWidth: 18 }, 2: { cellWidth: 20 }, 3: { cellWidth: 20 }, 4: { cellWidth: 22 }, 5: { cellWidth: 18 } }
+        columnStyles: { 0: { cellWidth: 60, halign: 'left' }, 1: { cellWidth: 20, halign: 'center' }, 2: { cellWidth: 22, halign: 'center' }, 3: { cellWidth: 20, halign: 'center' }, 4: { cellWidth: 22, halign: 'center' }, 5: { cellWidth: 18, halign: 'center' } },
+        styles: { cellPadding: 6, lineWidth: 0.3 }
     });
+    y = doc.lastAutoTable.finalY + 10;
     
-    y = doc.lastAutoTable.finalY + 12;
-    
-    // Critical Alerts
+    // Critical Alerts Section
     const criticalEmps = DATA.filter(e => e.days <= 90);
     if(criticalEmps.length > 0) {
-        doc.setFontSize(11);
+        doc.setFontSize(12);
         doc.setTextColor(220, 38, 38);
+        doc.setFont('helvetica', 'bold');
         doc.text(`Critical Alerts (${criticalEmps.length} employees)`, margin, y);
         y += 6;
         
-        const critRows = criticalEmps.slice(0, 20).map((e, i) => [i+1, e.name, e.dept, e.desig, fd(e.rd), `${e.days}d`]);
+        const critRows = criticalEmps.slice(0, 25).map((e, i) => [i+1, e.name, e.dept, e.desig, fd(e.rd), `${e.days} days`]);
         doc.autoTable({
             startY: y,
-            head: [['#', 'Name', 'Department', 'Designation', 'Retirement Date', 'Days']],
+            head: [['#', 'Name', 'Department', 'Designation', 'Retirement Date', 'Days Left']],
             body: critRows,
             theme: 'striped',
-            headStyles: { fillColor: [220, 38, 38], textColor: 255, fontSize: 8 },
-            bodyStyles: { fontSize: 7 },
+            headStyles: { fillColor: [220, 38, 38], textColor: 255, fontSize: 9, halign: 'center', valign: 'middle' },
+            bodyStyles: { fontSize: 8, valign: 'middle' },
             margin: { left: margin, right: margin },
-            columnStyles: { 0: { cellWidth: 8 }, 1: { cellWidth: 45 }, 2: { cellWidth: 40 }, 3: { cellWidth: 45 }, 4: { cellWidth: 30 }, 5: { cellWidth: 15 } }
+            columnStyles: { 0: { cellWidth: 8, halign: 'center' }, 1: { cellWidth: 50, halign: 'left' }, 2: { cellWidth: 40, halign: 'left' }, 3: { cellWidth: 45, halign: 'left' }, 4: { cellWidth: 35, halign: 'center' }, 5: { cellWidth: 20, halign: 'center' } },
+            styles: { cellPadding: 5 }
         });
-        y = doc.lastAutoTable.finalY + 12;
+        y = doc.lastAutoTable.finalY + 10;
     }
     
-    // All Employees
-    doc.setFontSize(11);
+    // All Employees - Complete list
+    doc.setFontSize(12);
     doc.setTextColor(0, 0, 0);
+    doc.setFont('helvetica', 'bold');
     doc.text(`Complete Employee List (All ${total} Records)`, margin, y);
     y += 6;
     
-    const empRows = DATA.map((e, i) => [i+1, e.name, e.dept, e.desig, fd(e.rd), `${e.days}d`, e.days <= 90 ? 'Critical' : (e.days <= 180 ? 'Soon' : 'On Track')]);
+    const empRows = DATA.map((e, i) => [
+        i+1, e.name, e.dept, e.desig, fd(e.rd), `${e.days}`,
+        e.days <= 90 ? 'Critical' : (e.days <= 180 ? 'Soon' : 'On Track')
+    ]);
     
     doc.autoTable({
         startY: y,
         head: [['#', 'Name', 'Department', 'Designation', 'Retirement Date', 'Days', 'Status']],
         body: empRows,
         theme: 'striped',
-        headStyles: { fillColor: [30, 58, 138], textColor: 255, fontSize: 8 },
-        bodyStyles: { fontSize: 7 },
+        headStyles: { fillColor: [30, 58, 138], textColor: 255, fontSize: 8, halign: 'center', valign: 'middle' },
+        bodyStyles: { fontSize: 8, valign: 'middle' },
         margin: { left: margin, right: margin },
-        columnStyles: { 0: { cellWidth: 8 }, 1: { cellWidth: 40 }, 2: { cellWidth: 35 }, 3: { cellWidth: 40 }, 4: { cellWidth: 30 }, 5: { cellWidth: 12 }, 6: { cellWidth: 20 } },
+        columnStyles: { 0: { cellWidth: 8, halign: 'center' }, 1: { cellWidth: 45, halign: 'left' }, 2: { cellWidth: 35, halign: 'left' }, 3: { cellWidth: 40, halign: 'left' }, 4: { cellWidth: 30, halign: 'center' }, 5: { cellWidth: 12, halign: 'center' }, 6: { cellWidth: 20, halign: 'center' } },
+        styles: { cellPadding: 5 },
         didParseCell: (data) => {
             if(data.column.index === 6 && data.section === 'body') {
                 if(data.cell.raw === 'Critical') data.cell.styles.textColor = [220, 38, 38];
@@ -620,13 +631,13 @@ function generateSimpleWord() {
     for(const [dept, data] of Object.entries(deptMap).sort((a,b) => b[1].total - a[1].total)) {
         const onTrackCount = data.total - data.critical - data.soon;
         const share = Math.round(data.total/total*100);
-        deptRows += `<tr>
-            <td style="padding:8px;border:1px solid #ddd"><strong>${dept}</strong></td>
-            <td style="padding:8px;border:1px solid #ddd;text-align:center">${data.total}</td>
-            <td style="padding:8px;border:1px solid #ddd;text-align:center;color:#dc2626">${data.critical}</td>
-            <td style="padding:8px;border:1px solid #ddd;text-align:center;color:#f59e0b">${data.soon}</td>
-            <td style="padding:8px;border:1px solid #ddd;text-align:center;color:#10b981">${onTrackCount}</td>
-            <td style="padding:8px;border:1px solid #ddd;text-align:center">${share}%</td>
+        deptRows += `<tr style="background:${deptRows.indexOf(dept) % 2 === 0 ? '#f9fafb' : '#ffffff'}">
+            <td style="border:1px solid #e5e7eb;padding:8px"><strong>${dept}</strong></td>
+            <td style="border:1px solid #e5e7eb;padding:8px;text-align:center"><strong>${data.total}</strong></td>
+            <td style="border:1px solid #e5e7eb;padding:8px;text-align:center;color:#dc2626">${data.critical}</td>
+            <td style="border:1px solid #e5e7eb;padding:8px;text-align:center;color:#f59e0b">${data.soon}</td>
+            <td style="border:1px solid #e5e7eb;padding:8px;text-align:center;color:#10b981">${onTrackCount}</td>
+            <td style="border:1px solid #e5e7eb;padding:8px;text-align:center">${share}%</td>
         </tr>`;
     }
     
@@ -634,63 +645,86 @@ function generateSimpleWord() {
     DATA.forEach((e, i) => {
         const statusText = e.days <= 90 ? 'Critical' : (e.days <= 180 ? 'Soon' : 'On Track');
         const statusColor = e.days <= 90 ? '#dc2626' : (e.days <= 180 ? '#f59e0b' : '#10b981');
-        empRows += `<tr>
-            <td style="padding:6px;border:1px solid #ddd">${i+1}</td>
-            <td style="padding:6px;border:1px solid #ddd"><strong>${e.name}</strong></td>
-            <td style="padding:6px;border:1px solid #ddd">${e.dept}</td>
-            <td style="padding:6px;border:1px solid #ddd">${e.desig}</td>
-            <td style="padding:6px;border:1px solid #ddd">${fd(e.rd)}</td>
-            <td style="padding:6px;border:1px solid #ddd;text-align:center">${e.days}</td>
-            <td style="padding:6px;border:1px solid #ddd;text-align:center"><span style="background:#fef2f2;padding:4px 12px;border-radius:20px;color:${statusColor}">${statusText}</span></td>
+        empRows += `<tr style="background:${i % 2 === 0 ? '#f9fafb' : '#ffffff'}">
+            <td style="border:1px solid #e5e7eb;padding:6px;text-align:center">${i+1}</td>
+            <td style="border:1px solid #e5e7eb;padding:6px"><strong>${e.name}</strong></td>
+            <td style="border:1px solid #e5e7eb;padding:6px">${e.dept}</td>
+            <td style="border:1px solid #e5e7eb;padding:6px">${e.desig}</td>
+            <td style="border:1px solid #e5e7eb;padding:6px;text-align:center">${fd(e.rd)}</td>
+            <td style="border:1px solid #e5e7eb;padding:6px;text-align:center">${e.days}</td>
+            <td style="border:1px solid #e5e7eb;padding:6px;text-align:center"><span style="background:#fef2f2;padding:4px 12px;border-radius:20px;color:${statusColor};font-weight:bold">${statusText}</span></td>
         </tr>`;
     });
+    
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     
     const html = `<!DOCTYPE html>
     <html>
     <head><meta charset="UTF-8"><title>NMDC Retirement Report</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #1E3A8A; border-bottom: 2px solid #1E3A8A; }
-        h2 { color: #1E3A8A; margin-top: 25px; }
-        .kpi { display: inline-block; width: 160px; margin: 10px; padding: 15px; background: #F3F4F6; border-radius: 8px; text-align: center; }
-        .kpi-num { font-size: 28px; font-weight: bold; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background: #1E3A8A; color: white; }
-        .footer { margin-top: 30px; text-align: center; font-size: 10px; color: #666; border-top: 1px solid #ddd; padding-top: 10px; }
-        .legend { background: #FEFCE8; padding: 12px; border-radius: 8px; margin: 15px 0; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 25px; }
+        h1 { color: #1E3A8A; border-bottom: 3px solid #1E3A8A; padding-bottom: 10px; }
+        h2 { color: #1E3A8A; margin-top: 25px; margin-bottom: 15px; }
+        .kpi-container { display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap; }
+        .kpi-card { flex: 1; min-width: 140px; background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 12px; padding: 20px; text-align: center; border: 1px solid #e2e8f0; }
+        .kpi-value { font-size: 36px; font-weight: bold; }
+        .kpi-label { font-size: 12px; color: #64748b; margin-top: 8px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th { background: #1E3A8A; color: white; padding: 12px; text-align: center; border: 1px solid #1E3A8A; }
+        td { border: 1px solid #e2e8f0; padding: 8px; vertical-align: top; }
+        .legend { background: #fefce8; padding: 15px; border-radius: 10px; margin: 20px 0; }
+        .legend-item { margin: 5px 0; }
+        .footer { margin-top: 30px; text-align: center; font-size: 10px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 15px; }
     </style>
     </head>
     <body>
         <h1>NMDC Limited</h1>
         <h2>HR Retirement Intelligence Report</h2>
-        <p>Generated on: ${new Date().toLocaleString()}</p>
+        <p>Generated on: ${dateStr}</p>
         
-        <div>
-            <div class="kpi"><div class="kpi-num" style="color:#1E3A8A">${total}</div><div>Total Upcoming</div></div>
-            <div class="kpi"><div class="kpi-num" style="color:#DC2626">${critical}</div><div>Critical (90 days or less)</div></div>
-            <div class="kpi"><div class="kpi-num" style="color:#F59E0B">${soon}</div><div>Soon (91-180 days)</div></div>
-            <div class="kpi"><div class="kpi-num" style="color:#10B981">${onTrack}</div><div>On Track (more than 180 days)</div></div>
-            <div class="kpi"><div class="kpi-num" style="color:#8B5CF6">${deptCount}</div><div>Departments</div></div>
+        <div class="kpi-container">
+            <div class="kpi-card"><div class="kpi-value" style="color:#1E3A8A">${total}</div><div class="kpi-label">Total Upcoming</div></div>
+            <div class="kpi-card"><div class="kpi-value" style="color:#DC2626">${critical}</div><div class="kpi-label">Critical (≤90 days)</div></div>
+            <div class="kpi-card"><div class="kpi-value" style="color:#F59E0B">${soon}</div><div class="kpi-label">Soon (91-180 days)</div></div>
+            <div class="kpi-card"><div class="kpi-value" style="color:#10B981">${onTrack}</div><div class="kpi-label">On Track (>180 days)</div></div>
+            <div class="kpi-card"><div class="kpi-value" style="color:#8B5CF6">${deptCount}</div><div class="kpi-label">Departments</div></div>
         </div>
         
         <div class="legend">
             <strong>Status Guide:</strong><br>
-            [Critical] - Retiring within 90 days (Immediate action required)<br>
-            [Soon] - Retiring in 91-180 days (Start succession planning)<br>
-            [On Track] - Retiring after 180 days (Regular monitoring)
+            <div class="legend-item">🔴 <strong style="color:#DC2626">CRITICAL</strong> - Retiring within 90 days (Immediate action required)</div>
+            <div class="legend-item">🟠 <strong style="color:#F59E0B">SOON</strong> - Retiring in 91-180 days (Start succession planning)</div>
+            <div class="legend-item">🟢 <strong style="color:#10B981">ON TRACK</strong> - Retiring after 180 days (Regular monitoring)</div>
         </div>
         
         <h2>Department-wise Breakdown</h2>
-        <table><thead><tr><th>Department</th><th>Total</th><th>Critical</th><th>Soon</th><th>On Track</th><th>Share</th></tr></thead><tbody>${deptRows}</tbody></table>
+        <table>
+            <thead>
+                <tr><th>Department</th><th>Total</th><th>Critical</th><th>Soon</th><th>On Track</th><th>Share</th></tr>
+            </thead>
+            <tbody>${deptRows}</tbody>
+        </table>
         
         <h2>Critical Alerts (Retiring within 90 days)</h2>
-        ${DATA.filter(e => e.days <= 90).length === 0 ? '<p>No critical retirees at this time.</p>' : 
-          `<table><thead><tr><th>#</th><th>Name</th><th>Department</th><th>Designation</th><th>Retirement Date</th><th>Days</th></tr></thead>
-          <tbody>${DATA.filter(e => e.days <= 90).map((e,i) => `<tr><td>${i+1}</td><td><strong>${e.name}</strong></td><td>${e.dept}</td><td>${e.desig}</td><td>${fd(e.rd)}</td><td style="color:#dc2626">${e.days}d</td></tr>`).join('')}</tbody></table>`}
+        ${DATA.filter(e => e.days <= 90).length === 0 ? '<p>✅ No critical retirees at this time.</p>' : 
+          `<table><thead><tr><th>#</th><th>Name</th><th>Department</th><th>Designation</th><th>Retirement Date</th><th>Days Left</th></tr></thead>
+          <tbody>${DATA.filter(e => e.days <= 90).map((e,i) => `<tr style="background:${i % 2 === 0 ? '#fef2f2' : '#fff'}">
+            <td style="text-align:center">${i+1}</td>
+            <td><strong>${e.name}</strong></td>
+            <td>${e.dept}</td>
+            <td>${e.desig}</td>
+            <td style="text-align:center">${fd(e.rd)}</td>
+            <td style="text-align:center;color:#dc2626;font-weight:bold">${e.days} days</td>
+          </tr>`).join('')}</tbody></table>`}
         
         <h2>Complete Employee List (All ${total} Records)</h2>
-        <table><thead><tr><th>#</th><th>Name</th><th>Department</th><th>Designation</th><th>Retirement Date</th><th>Days</th><th>Status</th></tr></thead><tbody>${empRows}</tbody></table>
+        <table>
+            <thead>
+                <tr><th>#</th><th>Name</th><th>Department</th><th>Designation</th><th>Retirement Date</th><th>Days</th><th>Status</th></tr>
+            </thead>
+            <tbody>${empRows}</tbody>
+        </table>
         
         <div class="footer">NMDC Limited · HR Analytics Division · Confidential Report</div>
     </body>
@@ -706,7 +740,7 @@ function generateSimpleWord() {
     hideLoading();
 }
 
-function autoCalcRetirement(){ const dobVal=document.getElementById('c-dob').value; if(!dobVal){document.getElementById('calc-result').style.display='none';return;} const dob=new Date(dobVal); if(isNaN(dob)){document.getElementById('calc-result').style.display='none';return;} dob.setHours(0,0,0,0); const rd=calcRetDate(dob),rem=ymdr(rd); document.getElementById('cr-date').textContent=fd(rd); document.getElementById('cr-days').textContent=rem.days+'d'; document.getElementById('cr-months').textContent=rem.months+' mo'; document.getElementById('cr-years').textContent=rem.years+' yrs'; const d60=new Date(dob);d60.setFullYear(d60.getFullYear()+60); const note=d60.getDate()===1?`DOB ${fd(dob)} +60y = ${fd(d60)} → moved to previous month end = ${fd(rd)}`:`DOB ${fd(dob)} +60y = ${fd(d60)} → end of that month = ${fd(rd)}`; document.getElementById('cr-note').innerHTML=`<strong>${note}</strong><br><br>${rem.totalDays<=90?' Critical (90 days or less)':rem.totalDays<=180?' Upcoming (91-180 days)':' On Track (more than 180 days)'}`; document.getElementById('calc-result').style.display='block'; }
+function autoCalcRetirement(){ const dobVal=document.getElementById('c-dob').value; if(!dobVal){document.getElementById('calc-result').style.display='none';return;} const dob=new Date(dobVal); if(isNaN(dob)){document.getElementById('calc-result').style.display='none';return;} dob.setHours(0,0,0,0); const rd=calcRetDate(dob),rem=ymdr(rd); document.getElementById('cr-date').textContent=fd(rd); document.getElementById('cr-days').textContent=rem.days+'d'; document.getElementById('cr-months').textContent=rem.months+' mo'; document.getElementById('cr-years').textContent=rem.years+' yrs'; const d60=new Date(dob);d60.setFullYear(d60.getFullYear()+60); const note=d60.getDate()===1?`DOB ${fd(dob)} +60y = ${fd(d60)} → moved to previous month end = ${fd(rd)}`:`DOB ${fd(dob)} +60y = ${fd(d60)} → end of that month = ${fd(rd)}`; document.getElementById('cr-note').innerHTML=`<strong>${note}</strong><br><br>${rem.totalDays<=90?' Critical (≤90 days)':rem.totalDays<=180?' Upcoming (91-180 days)':' On Track (>180 days)'}`; document.getElementById('calc-result').style.display='block'; }
 function resetCalculator(){document.getElementById('c-dob').value='';document.getElementById('calc-result').style.display='none';}
 function ymdr(t){const ms=t-TODAY;if(ms<=0)return{years:0,months:0,days:0,totalDays:0};const td=Math.floor(ms/86400000);let y=Math.floor(td/365),rd=td%365,m=Math.floor(rd/30.44),d=Math.floor(rd%30.44);if(m>=12){y+=Math.floor(m/12);m=m%12;}return{years:y,months:m,days:d,totalDays:td};}
 </script>

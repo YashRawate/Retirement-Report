@@ -1959,7 +1959,15 @@ th.sortable:not(.asc):not(.desc) .si::after {
     border: 1px solid var(--bd);
     border-radius: 8px;
     padding: 10px 12px;
-    text-align: center
+    text-align: center;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s, border-color .15s
+}
+
+.fs-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sh2);
+    border-color: var(--indb)
 }
 
 .fs-stat-num {
@@ -3640,13 +3648,58 @@ body.dark .risk-critical {
         margin-bottom: 12pt !important;
         box-shadow: none !important;
         border: 1px solid #ddd !important;
-        page-break-inside: avoid
+        page-break-inside: avoid;
+        break-inside: avoid
+    }
+
+    .rpt-table-wrap {
+        page-break-inside: auto;
+        break-inside: auto
+    }
+
+    .rpt-table {
+        page-break-inside: auto;
+        break-inside: auto
+    }
+
+    .rpt-table thead {
+        display: table-header-group
+    }
+
+    .rpt-table tr {
+        page-break-inside: avoid;
+        break-inside: avoid
+    }
+
+    .rpt-sel-bar {
+        display: none !important
+    }
+
+    .cb-col {
+        display: none !important
+    }
+
+    .rpt-table th.cb-col,
+    .rpt-table td.cb-col {
+        display: none !important
     }
 
     .rpt-table th,
     .rpt-table td {
         padding: 4px 8px !important;
         font-size: 8.5pt !important
+    }
+
+    .rpt-section-hdr {
+        page-break-after: avoid;
+        break-after: avoid
+    }
+
+    .rpt-kpi-grid,
+    .std-block-grid,
+    .age-metrics-row {
+        page-break-inside: avoid;
+        break-inside: avoid
     }
 }
 

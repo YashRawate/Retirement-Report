@@ -429,6 +429,7 @@ function applyGF() {
     if (fsOpen) {
         FS_LOCAL.clickedType = null;
         FS_LOCAL.clickedValues = [];
+        closeFSStatDrill();
         refreshFS();
     }
 }
@@ -459,6 +460,7 @@ function clearAllGF() {
 
     FS_LOCAL.clickedType=null;FS_LOCAL.clickedValues=[];FS_LOCAL.timePeriod='';
     updateFSTimeBtns();
+    closeFSStatDrill();
 
     const pool=[...DATA,...PAST];
     RPT_FILTERED=pool;
@@ -871,16 +873,18 @@ function fsCategoryClick(type,value) {
         if(idx>=0){FS_LOCAL.clickedValues=[];FS_LOCAL.clickedType=null;}
         else{FS_LOCAL.clickedValues=[value];}
     }else{FS_LOCAL.clickedType=type;FS_LOCAL.clickedValues=[value];}
+    closeFSStatDrill();
     refreshFSDetailOnly();
 }
 
-function clearFSLocalClick(){FS_LOCAL.clickedType=null;FS_LOCAL.clickedValues=[];refreshFSDetailOnly();}
+function clearFSLocalClick(){FS_LOCAL.clickedType=null;FS_LOCAL.clickedValues=[];closeFSStatDrill();refreshFSDetailOnly();}
 
 function refreshFSDetailOnly(){const pool=getFSDisplayPool();updateFSStats(pool);updateFSTable(pool);updateFSInsights(pool);renderFSClickBanner();}
 
 function setFSTimePeriod(period) {
     FS_LOCAL.timePeriod = period || '';
     FS_LOCAL.clickedType=null;FS_LOCAL.clickedValues=[];
+    closeFSStatDrill();
     updateFSTimeBtns();
     renderFSClickBanner();
     refreshFS();
@@ -912,6 +916,7 @@ function openFS(type, title) {
     updateFSTimeBtns();
     updateFSAppliedFilters();
     renderFSClickBanner();
+    closeFSStatDrill();
     refreshFS();
 }
 
@@ -938,7 +943,7 @@ function syncFSSidebarFromGF() {
         updateMSTrigger(id, '-fs');
     });
 }
-function closeFS(){document.getElementById('fs-ov').classList.remove('show');if(FS_CH){FS_CH.destroy();FS_CH=null;}}
+function closeFS(){document.getElementById('fs-ov').classList.remove('show');if(FS_CH){FS_CH.destroy();FS_CH=null;}closeFSStatDrill();}
 function closeFSOv(e){if(e.target.id==='fs-ov')closeFS();}
 
 function getAppliedFiltersText() {
@@ -978,16 +983,249 @@ function renderFSClickBanner() {
     }else{el.style.display='none';}
 }
 
+// ===================== COUNT SUMMARY DRILL-DOWN (NEW) =====================
+// Tracks which stat key is currently drilled, to highlight active card
+let _fsStatDrillKey = null;
+
+/**
+ * Called when a user clicks a count summary card in the right panel.
+ * Filters the display pool to matching employees and renders a list below the stats.
+ * @param {string} key - identifies which metric was clicked
+ * @param {string} label - human-readable label for the header
+ */
+function openFSStatDrill(key, label) {
+    // Toggle off if clicking the same card again
+    if (_fsStatDrillKey === key) {
+        closeFSStatDrill();
+        return;
+    }
+    _fsStatDrillKey = key;
+
+    const pool = getFSDisplayPool();
+    const now = TODAY;
+    const active = pool.filter(e => e.rd >= now);
+    const d1 = addYears(1), d5 = addYears(5), d10 = addYears(10);
+    const d3m = addMonths(3);
+    const tm1 = new Date(now.getFullYear(), now.getMonth(), 1);
+    const tm2 = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    const nm1 = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+    const nm2 = new Date(now.getFullYear(), now.getMonth() + 2, 0);
+
+    let list = [];
+    switch (key) {
+        case 'total':      list = pool; break;
+        case 'ret1y':      list = active.filter(e => e.rd <= d1); break;
+        case 'ret5y':      list = active.filter(e => e.rd <= d5); break;
+        case 'ret10y':     list = active.filter(e => e.rd <= d10); break;
+        case 'retired':    list = pool.filter(e => e.rd < now); break;
+        case 'active':     list = active; break;
+        case 'avgAge':     list = pool; break;  // show all, sorted by age
+        case 'ret3m':      list = active.filter(e => e.rd <= d3m); break;
+        default:           list = pool; break;
+    }
+
+    // For average age, sort by age descending so it's meaningful
+    if (key === 'avgAge') {
+        list = [...list].sort((a, b) => b.age - a.age);
+    }
+
+    renderFSStatDrillList(list, label);
+    // Re-render stats to highlight active card
+    updateFSStats(pool);
+}
+
+/**
+ * Renders the employee drill list in a panel that appears below the Count Summary
+ * within the right column of the fullscreen modal. No new modal is created.
+ */
+function renderFSStatDrillList(list, label) {
+    // Remove any existing drill panel
+    const existing = document.getElementById('fs-stat-drill-panel');
+    if (existing) existing.remove();
+
+    const fsRight = document.querySelector('.fs-right');
+    if (!fsRight) return;
+
+    // Build the panel HTML
+    const panel = document.createElement('div');
+    panel.id = 'fs-stat-drill-panel';
+    panel.style.cssText = `
+        background: var(--w);
+        border: 1.5px solid var(--ind2);
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 4px;
+        flex-shrink: 0;
+        animation: up .18s ease both;
+    `;
+
+    // Header row
+    const hdr = document.createElement('div');
+    hdr.style.cssText = `
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 12px;
+        background: var(--ind);
+        color: #fff;
+    `;
+    hdr.innerHTML = `
+        <div style="display:flex;align-items:center;gap:7px;">
+            <i class="fas fa-users" style="font-size:11px;opacity:.85"></i>
+            <span style="font-size:12px;font-weight:700;">${esc(label)}</span>
+            <span style="background:rgba(255,255,255,.2);border-radius:10px;padding:1px 8px;font-size:10px;font-family:var(--font-mono);font-weight:700;">${fmtN(list.length)}</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center;">
+            <button onclick="exportFSStatDrillList()" title="Export Excel"
+                style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:5px;padding:3px 8px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:4px;">
+                <i class="fas fa-file-excel"></i> Excel
+            </button>
+            <button onclick="closeFSStatDrill()"
+                style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:5px;width:22px;height:22px;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    panel.appendChild(hdr);
+
+    // Table container
+    const tableWrap = document.createElement('div');
+    tableWrap.style.cssText = `overflow-x:auto;max-height:340px;overflow-y:auto;`;
+
+    if (!list.length) {
+        tableWrap.innerHTML = `<div style="text-align:center;padding:24px 12px;color:var(--tx3);font-size:13px;">No employees found.</div>`;
+    } else {
+        const rows = list.map((e, i) => {
+            const ej = JSON.stringify(e).replace(/'/g, "&#39;");
+            const s = getStatus(e);
+            const rdCls = s === 'retired' ? 'past' : (e.st || 'ok');
+            return `<tr onclick='openEmpPopup(${ej})' style="cursor:pointer;">
+                <td class="cm" style="padding:6px 8px;width:32px;color:var(--tx3);font-size:10px;">${i + 1}</td>
+                <td style="padding:6px 8px;font-weight:700;color:var(--tx);white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis;" title="${esc(e.name)}">${esc(e.name)}</td>
+                <td style="padding:6px 8px;">${e.empid ? `<span class="empid-badge">${esc(e.empid)}</span>` : '—'}</td>
+                <td style="padding:6px 8px;color:var(--tx2);font-size:11px;white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;" title="${esc(e.dept)}">${esc(e.dept)}</td>
+                <td style="padding:6px 8px;color:var(--tx3);font-size:11px;white-space:nowrap;max-width:100px;overflow:hidden;text-overflow:ellipsis;" title="${esc(e.desig)}">${esc(e.desig)}</td>
+                <td style="padding:6px 8px;font-size:11px;color:var(--tx2);">${e.age} yrs</td>
+                <td class="rdate ${rdCls}" style="padding:6px 8px;font-size:11px;white-space:nowrap;">${fmtDate(e.rd)}</td>
+                <td style="padding:6px 8px;">${statusBadge(e)}</td>
+            </tr>`;
+        }).join('');
+
+        tableWrap.innerHTML = `
+            <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                    <tr style="background:var(--s1);position:sticky;top:0;z-index:2;">
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">#</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Name</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Emp ID</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Department</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Designation</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Age</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Ret. Date</th>
+                        <th style="padding:6px 8px;text-align:left;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--tx3);border-bottom:1px solid var(--bd);white-space:nowrap;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+
+        // Zebra hover via JS since we can't use CSS classes easily inline
+        tableWrap.querySelectorAll('tbody tr').forEach((tr, i) => {
+            tr.style.background = i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,.018)';
+            tr.addEventListener('mouseenter', () => tr.style.background = 'var(--indl)');
+            tr.addEventListener('mouseleave', () => tr.style.background = i % 2 === 0 ? 'transparent' : 'rgba(0,0,0,.018)');
+        });
+    }
+
+    panel.appendChild(tableWrap);
+
+    // Store list for export
+    panel._drillList = list;
+    panel._drillLabel = label;
+
+    fsRight.appendChild(panel);
+    // Scroll the right panel to show the new drill panel
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+}
+
+/**
+ * Closes and removes the stat drill panel, resets the active key.
+ */
+function closeFSStatDrill() {
+    _fsStatDrillKey = null;
+    const panel = document.getElementById('fs-stat-drill-panel');
+    if (panel) panel.remove();
+}
+
+/**
+ * Exports the currently drilled employee list to Excel.
+ */
+function exportFSStatDrillList() {
+    const panel = document.getElementById('fs-stat-drill-panel');
+    if (!panel || !panel._drillList || !panel._drillList.length) {
+        showToast('No data to export', 'fa-exclamation-circle');
+        return;
+    }
+    const list = panel._drillList;
+    const label = panel._drillLabel || 'Drill';
+    const hdrs = ['#', 'Name', 'Emp ID', 'Department', 'Sub-Dept', 'Designation', 'Grade', 'Skill', 'Deposit', 'Age', 'DOB', 'Retirement Date', 'FY', 'Gender', 'Status'];
+    const rows = list.map((e, i) => [
+        i + 1, e.name, e.empid, e.dept, e.subdept, e.desig, e.grade, e.skill,
+        e.deposit, e.age, fmtDate(e.dob), fmtDate(e.rd), e.fy, e.gender, getStatus(e)
+    ]);
+    const ws = XLSX.utils.aoa_to_sheet([hdrs, ...rows]);
+    ws['!cols'] = [
+        {wch:4},{wch:28},{wch:10},{wch:22},{wch:16},{wch:22},{wch:8},{wch:18},
+        {wch:8},{wch:6},{wch:14},{wch:14},{wch:12},{wch:6},{wch:10}
+    ];
+    const wb = XLSX.utils.book_new();
+    const sheetName = label.replace(/[:\\\/\?\*\[\]]/g, '').slice(0, 31);
+    XLSX.utils.book_append_sheet(wb, ws, sheetName || 'Drill');
+    XLSX.writeFile(wb, `NMDC_${sheetName.replace(/\s+/g,'_')}.xlsx`);
+    showToast(`${fmtN(list.length)} employees exported!`, 'fa-file-excel');
+}
+
+// ===================== COUNT SUMMARY UPDATE (MODIFIED) =====================
+/**
+ * Renders the Count Summary stat cards in the FS right panel.
+ * Each card is now clickable to trigger second-level drill-down.
+ * Only this function is changed from the original — logic identical, onclick added.
+ */
 function updateFSStats(pool) {
-    const now=TODAY,active=pool.filter(e=>e.rd>=now);
-    const d1=addYears(1),d5=addYears(5),d10=addYears(10);
-    const avg=pool.length?pool.reduce((s,e)=>s+e.age,0)/pool.length:0;
-    document.getElementById('fs-stats').innerHTML=[
-        {n:fmtN(pool.length),l:'Total',c:'var(--ind)'},{n:fmtN(active.filter(e=>e.rd<=d1).length),l:'Retiring 1Y',c:'#dc2626'},
-        {n:fmtN(active.filter(e=>e.rd<=d5).length),l:'Retiring 5Y',c:'#d97706'},{n:fmtN(active.filter(e=>e.rd<=d10).length),l:'Retiring 10Y',c:'#059669'},
-        {n:fmtN(pool.filter(e=>e.rd<now).length),l:'Retired',c:'var(--sk)'},{n:fmtN(active.length),l:'Active',c:'var(--em)'},
-        {n:avg.toFixed(1),l:'Avg Age',c:'#7c3aed'},{n:fmtN(active.filter(e=>e.rd<=addMonths(3)).length),l:'Retiring 3M',c:'#ea580c'}
-    ].map(s=>`<div class="fs-stat"><div class="fs-stat-num" style="color:${s.c}">${s.n}</div><div class="fs-stat-lbl">${s.l}</div></div>`).join('');
+    const now = TODAY, active = pool.filter(e => e.rd >= now);
+    const d1 = addYears(1), d5 = addYears(5), d10 = addYears(10);
+    const d3m = addMonths(3);
+    const avg = pool.length ? pool.reduce((s, e) => s + e.age, 0) / pool.length : 0;
+
+    const stats = [
+        { key: 'total',   n: fmtN(pool.length),                              l: 'Total',        c: 'var(--ind)',  label: 'All Employees' },
+        { key: 'ret1y',   n: fmtN(active.filter(e => e.rd <= d1).length),    l: 'Retiring 1Y',  c: '#dc2626',     label: 'Retiring Within 1 Year' },
+        { key: 'ret5y',   n: fmtN(active.filter(e => e.rd <= d5).length),    l: 'Retiring 5Y',  c: '#d97706',     label: 'Retiring Within 5 Years' },
+        { key: 'ret10y',  n: fmtN(active.filter(e => e.rd <= d10).length),   l: 'Retiring 10Y', c: '#059669',     label: 'Retiring Within 10 Years' },
+        { key: 'retired', n: fmtN(pool.filter(e => e.rd < now).length),      l: 'Retired',      c: 'var(--sk)',   label: 'Already Retired' },
+        { key: 'active',  n: fmtN(active.length),                             l: 'Active',       c: 'var(--em)',   label: 'Active Employees' },
+        { key: 'avgAge',  n: avg.toFixed(1),                                  l: 'Avg Age',      c: '#7c3aed',     label: 'All Employees (by Age)' },
+        { key: 'ret3m',   n: fmtN(active.filter(e => e.rd <= d3m).length),   l: 'Retiring 3M',  c: '#ea580c',     label: 'Retiring Within 3 Months' }
+    ];
+
+    document.getElementById('fs-stats').innerHTML = stats.map(s => {
+        const isActive = _fsStatDrillKey === s.key;
+        return `<div class="fs-stat"
+            onclick="openFSStatDrill('${s.key}', '${esc(s.label)}')"
+            title="Click to see employee list"
+            style="
+                cursor:pointer;
+                border-color:${isActive ? 'var(--ind2)' : 'var(--bd)'};
+                background:${isActive ? 'var(--indl)' : 'var(--w)'};
+                outline:${isActive ? '2px solid var(--ind2)' : 'none'};
+                position:relative;
+            ">
+            ${isActive ? `<div style="position:absolute;top:4px;right:5px;width:6px;height:6px;border-radius:50%;background:var(--ind2);"></div>` : ''}
+            <div class="fs-stat-num" style="color:${s.c}">${s.n}</div>
+            <div class="fs-stat-lbl">${s.l}</div>
+            <div style="font-size:9px;color:var(--tx3);margin-top:2px;opacity:.7;">click for list</div>
+        </div>`;
+    }).join('');
 }
 
 function updateFSTable(pool) {
